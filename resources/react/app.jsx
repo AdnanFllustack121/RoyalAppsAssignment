@@ -1,8 +1,14 @@
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import SignIn from '../components/SignIn';
 
 
 ReactDOM.createRoot(document.getElementById('app')).render(
-    <div>
-        <h2>React App</h2>
-    </div>
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<SignIn />} />
+            <Route path="/login" element={<SignIn />} />
+            {/* <Route path="/about" element={<About />} /> */}
+        </Routes>
+    </BrowserRouter>
 );
