@@ -100,3 +100,32 @@ Route::post("/get/author", function (Request $request) {
         throw $e;
     }
 });
+
+Route::post("/create/book", function (Request $request) {
+    $body = $request->all();
+    $client = new Client();
+
+    try {
+        $response = $client->request('POST', 'https://candidate-testing.api.royal-apps.io/api/v2/books', [
+            'json' => [
+                "author" => ["id" => $body["author_id"]],
+                "title" => $body["title"],
+                "release_date" => $body["date"],
+                "description" => $body["description"],
+                "isbn" => $body["isbn"],
+                "format" => $body["format"],
+                "number_of_pages" => $body["pages"]
+            ],
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $body["token"]
+            ]
+        ]);
+
+        $data = json_decode($response->getBody());
+
+        return ["success" => true, "data" => $data];
+    } catch (\Throwable $e) {
+        throw $e;
+    }
+});
