@@ -35,12 +35,16 @@ export default function SignIn() {
         const data = new FormData(event.currentTarget);
         
         try {
-            await axios.post("http://127.0.0.1:8000/api/get/access_token", {
+            const response = await axios.post("http://127.0.0.1:8000/api/get/access_token", {
                 email: data.get('email'),
                 password: data.get('password')
             });
 
-            return alert("Login Success");
+            if (response.data.success) {
+                console.log("response", response.data.data);
+                localStorage.setItem("token", response.data.data);
+            }
+
         } catch (error) {
             return alert("Invalid Credentials");
         }
