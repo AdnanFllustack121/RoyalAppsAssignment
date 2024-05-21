@@ -50,7 +50,6 @@ export default function Authors() {
                             <TableCell>{`${row.first_name} ${row.last_name}`}</TableCell>
                             <TableCell>{row.gender}</TableCell>
                             <TableCell>{`${row.birthday.split("T")[0]} / ${row.place_of_birth}`}</TableCell>
-                            <TableCell>{row.protein}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -66,6 +65,20 @@ export default function Authors() {
 
             if (response.data.success) {
                 setAuthors(response.data.data.items);
+
+                // for (let i = 0; i < response.data.data.items.length; i++) {
+                //     const getBooks = await axios.post(`http://127.0.0.1:8000/api/get/author`, {
+                //         token: localStorage.getItem("token"),
+                //         author_id: response.data.data.items[i].id
+                //     });
+
+                //     if (getBooks.data.success) {
+                //         response.data.data.items[i]["books"] = getBooks.data.data.books
+                //     }
+
+                //     setAuthors(response.data.data.items);
+                // }
+
             }
 
         } catch (error) {

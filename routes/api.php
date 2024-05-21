@@ -80,3 +80,23 @@ Route::post("/get/authors", function (Request $request) {
         throw $e;
     }
 });
+
+Route::post("/get/author", function (Request $request) {
+    $body = $request->all();
+    $client = new Client();
+
+    try {
+        $response = $client->request('GET', 'https://candidate-testing.api.royal-apps.io/api/v2/authors/' . $body["author_id"], [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $body["token"]
+            ]
+        ]);
+
+        $data = json_decode($response->getBody());
+
+        return ["success" => true, "data" => $data];
+    } catch (\Throwable $e) {
+        throw $e;
+    }
+});
