@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import NavBar from "./NavBar";
 
 export default function Book() {
     React.useEffect(() => {
@@ -15,6 +16,7 @@ export default function Book() {
     const [getAuthorId, setAuthorId] = React.useState();
 
     return <>
+        <NavBar />
         <input placeholder="title" onChange={(e) => setTitle(e.target.value)} />
         <input placeholder="description" onChange={(e) => setDescription(e.target.value)} />
         <input placeholder="format" onChange={(e) => setFormat(e.target.value)} />
@@ -52,9 +54,9 @@ export default function Book() {
                 title: getTitle,
                 date: new Date(),
                 description: getDescription,
-                isbn : getIsbn,
-                format : getFormat,
-                pages : getPages,
+                isbn: getIsbn,
+                format: getFormat,
+                pages: getPages,
                 author_id: getAuthorId
             });
             console.log("response", response);

@@ -44,13 +44,14 @@ export default function SignIn() {
             });
 
             if (response.data.success) {
-                console.log("response", response.data.data);
-                localStorage.setItem("token", response.data.data);
+                localStorage.setItem("token", response.data.data.token_key);
+                localStorage.setItem("first_name", response.data.data.user.first_name);
+                localStorage.setItem("last_name", response.data.data.user.last_name);
                 navigate("/authors");
             }
 
         } catch (error) {
-            return alert("Invalid Credentials");
+            console.log("error", error);
         }
     };
 

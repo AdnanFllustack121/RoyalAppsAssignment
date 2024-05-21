@@ -53,7 +53,7 @@ Route::post('/get/access_token', function (Request $request) {
             //     $token->save();
             // }
          
-            return ["success" => true, "data" => $data->token_key];
+            return ["success" => true, "data" => $data];
         }
 
     } catch (\Throwable $e) {
@@ -116,6 +116,46 @@ Route::post("/create/book", function (Request $request) {
                 "format" => $body["format"],
                 "number_of_pages" => $body["pages"]
             ],
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $body["token"]
+            ]
+        ]);
+
+        $data = json_decode($response->getBody());
+
+        return ["success" => true, "data" => $data];
+    } catch (\Throwable $e) {
+        throw $e;
+    }
+});
+
+Route::post("/delete/book", function (Request $request) {
+    $body = $request->all();
+    $client = new Client();
+
+    try {
+        $response = $client->request('DELETE', 'https://candidate-testing.api.royal-apps.io/api/v2/books/' . $body["book_id"], [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $body["token"]
+            ]
+        ]);
+
+        $data = json_decode($response->getBody());
+
+        return ["success" => true, "data" => $data];
+    } catch (\Throwable $e) {
+        throw $e;
+    }
+});
+
+Route::post("/delete/author", function (Request $request) {
+    $body = $request->all();
+    $client = new Client();
+
+    try {
+        $response = $client->request('DELETE', 'https://candidate-testing.api.royal-apps.io/api/v2/authors/' . $body["author_id"], [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $body["token"]

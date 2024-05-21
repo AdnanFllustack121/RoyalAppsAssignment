@@ -4,6 +4,7 @@ import SignIn from '../components/SignIn';
 import Authors from '../components/Authors';
 import Author from '../components/Author';
 import Book from '../components/Book';
+import CreateAuthor from '../components/CreateAuthor';
 
 
 ReactDOM.createRoot(document.getElementById('app')).render(
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('app')).render(
             <Route path="authors" element={<Authors />} />
             <Route path="author/:id" element={<Author />} />
             <Route path="createbook" element={<Book />} />
+            <Route path="createauthor" element={<CreateAuthor />} />
         </Routes>
     </BrowserRouter>
 );
