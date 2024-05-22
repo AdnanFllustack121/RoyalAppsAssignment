@@ -27,7 +27,7 @@ export default function Book() {
         <br />
         <br />
         <br />
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: "center" }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate={false} sx={{ mt: 1, textAlign: "center" }}>
             <Button variant="outlined" color="error" onClick={() => navigate("/authors")}>
                 Go Back
             </Button>

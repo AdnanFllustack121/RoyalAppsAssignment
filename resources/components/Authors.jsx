@@ -11,11 +11,10 @@ import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import NavBar from "./NavBar";
 
-
-
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
 }
+
 const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
@@ -35,9 +34,6 @@ export default function Authors() {
     }, []);
 
     const [getAuthors, setAuthors] = React.useState([]);
-    console.log("getAuthors", getAuthors);
-
-
 
     return (
         <>
@@ -65,7 +61,7 @@ export default function Authors() {
                                 <TableCell>{`${row.first_name} ${row.last_name}`}</TableCell>
                                 <TableCell>{row.gender}</TableCell>
                                 <TableCell>{`${row.birthday.split("T")[0]} / ${row.place_of_birth}`}</TableCell>
-                                <TableCell><Button onClick={() => navigate(`/author/${row.id}`)}>View Details</Button></TableCell>
+                                <TableCell><Button variant="contained" onClick={() => navigate(`/author/${row.id}`)}>View Details</Button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

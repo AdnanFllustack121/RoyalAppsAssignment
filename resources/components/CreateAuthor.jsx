@@ -13,12 +13,7 @@ export default function CreateAuthor() {
         }
     }, []);
 
-    const [getFirstName, setFirstName] = React.useState("");
-    const [getLastName, setLastName] = React.useState("");
-    const [getBirthday, setBirthday] = React.useState("");
-    const [getBio, setBio] = React.useState("");
     const [getGender, setGender] = React.useState("");
-    const [getBirthPlace, setBirthPlace] = React.useState("");
 
     const handleChange = (event) => {
         setGender(event.target.value);
@@ -29,7 +24,7 @@ export default function CreateAuthor() {
         <br />
         <br />
         <br />
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: "center" }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate={false} sx={{ mt: 1, textAlign: "center" }}>
             <Button variant="outlined" color="error" onClick={() => navigate("/authors")}>
                 Go Back
             </Button>

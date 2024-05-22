@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 export default function Author() {
     const navigate = useNavigate();
@@ -17,22 +18,80 @@ export default function Author() {
     return (
         <>
             <NavBar />
-            <button onClick={() => navigate("/authors")}>Go back</button>
-            <p>{getAuthor?.first_name}</p>
-            <p>{getAuthor?.last_name}</p>
-            <p>Books</p>
-            <p>
+            <br />
+            <Box validate sx={{ mt: 1, textAlign: "center" }}>
+                <Button variant="outlined" color="error" onClick={() => navigate("/authors")}>
+                    Go Back
+                </Button>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 {
-                    getAuthor?.books?.length == 0 ? "No Books Available for this Author" :
-                        getAuthor?.books.map((book, index) => <>
-                            <span>{book?.title}</span>
-                            <button onClick={() => handleDelete(book?.id)}>Delete Book</button>
-                        </>)
+                    getAuthor && <>
+                        <Typography variant="button" display="block" gutterBottom>
+                            Author Name: <b>{getAuthor?.first_name} {getAuthor?.last_name}</b>
+                        </Typography>
+                        <br />
+
+                        <Typography variant="button" display="block" gutterBottom>
+                            Author Birthday: <b>{getAuthor?.birthday.split("T")[0]}</b>
+                        </Typography>
+                        <br />
+
+                        <Typography variant="button" display="block" gutterBottom>
+                            Author Gender: <b>{getAuthor?.gender.toUpperCase()}</b>
+                        </Typography>
+                        <br />
+
+                        <Typography variant="button" display="block" gutterBottom>
+                            Author Place of Birth: <b>{getAuthor?.place_of_birth}</b>
+                        </Typography>
+                        <br />
+
+                        <Typography variant="button" display="block" gutterBottom>
+                            Author Books Count: <b>{getAuthor?.books?.length} Books</b>
+                        </Typography>
+                        <br />
+                        {
+                            getAuthor?.books?.length == 0 ?
+                                <Button color="error" variant="contained" onClick={handleDeleteAuthor}>Delete This Author</Button> :
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>#</TableCell>
+                                                <TableCell>Book Name</TableCell>
+                                                <TableCell>Book Description</TableCell>
+                                                <TableCell>Book Pages</TableCell>
+                                                <TableCell>Book Release Date</TableCell>
+                                                <TableCell>Action</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {getAuthor?.books.map((row, index) => (
+                                                <TableRow
+                                                    key={index}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        {index + 1}
+                                                    </TableCell>
+                                                    <TableCell>{row?.title}</TableCell>
+                                                    <TableCell>{row?.description}</TableCell>
+                                                    <TableCell>{row?.number_of_pages}</TableCell>
+                                                    <TableCell>{row?.release_date.split("T")[0]}</TableCell>
+                                                    <TableCell><Button variant="contained" color="error" onClick={() => handleDelete(row?.id)}>Delete this Book</Button></TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                        }
+                    </>
                 }
-            </p>
-            {
-                getAuthor?.books?.length == 0 && <button onClick={handleDeleteAuthor}>Delete this Author</button>
-            }
+            </Box>
         </>
     )
 
@@ -53,11 +112,14 @@ export default function Author() {
 
     async function handleDelete(id) {
         try {
-            console.log("OKO", id);
             const response = await axios.post("http://127.0.0.1:8000/api/delete/book", {
                 token: localStorage.getItem("token"),
                 book_id: id
             });
+            if (response.data.success) {
+                alert("Book Delete Successfully");
+                await getAuthorDetails();
+            }
         } catch (error) {
             console.log("ERROR", error);
         }
@@ -74,6 +136,7 @@ export default function Author() {
             });
 
             if (response.data.success) {
+                alert("Author Deleted Successfully");
                 navigate("/authors");
             }
         } catch (error) {
