@@ -43,10 +43,10 @@ export default function Authors() {
                     <TableHead>
                         <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Gender</TableCell>
-                            <TableCell>Birthday / Place</TableCell>
-                            <TableCell>Book Details</TableCell>
+                            <TableCell>Author Name</TableCell>
+                            <TableCell>Author Gender</TableCell>
+                            <TableCell>Author Birthday / Place of Birth</TableCell>
+                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -59,7 +59,7 @@ export default function Authors() {
                                     {index + 1}
                                 </TableCell>
                                 <TableCell>{`${row.first_name} ${row.last_name}`}</TableCell>
-                                <TableCell>{row.gender}</TableCell>
+                                <TableCell>{row.gender.toUpperCase()}</TableCell>
                                 <TableCell>{`${row.birthday.split("T")[0]} / ${row.place_of_birth}`}</TableCell>
                                 <TableCell><Button variant="contained" onClick={() => navigate(`/author/${row.id}`)}>View Details</Button></TableCell>
                             </TableRow>
