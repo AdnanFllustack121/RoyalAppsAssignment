@@ -2,6 +2,7 @@ import axios from "axios";
 import * as React from "react";
 import NavBar from "./NavBar";
 import { useNavigate } from "react-router-dom";
+import { Box, Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 export default function Book() {
     const navigate = useNavigate();
@@ -15,28 +16,73 @@ export default function Book() {
     }, []);
 
     const [getAuthors, setAuthors] = React.useState([]);
-    const [getTitle, setTitle] = React.useState("");
-    const [getDescription, setDescription] = React.useState("");
-    const [getFormat, setFormat] = React.useState("");
-    const [getIsbn, setIsbn] = React.useState("");
-    const [getPages, setPages] = React.useState();
     const [getAuthorId, setAuthorId] = React.useState();
+
+    const handleChange = (event) => {
+        setAuthorId(event.target.value);
+    };
 
     return <>
         <NavBar />
-        <input placeholder="title" onChange={(e) => setTitle(e.target.value)} />
-        <input placeholder="description" onChange={(e) => setDescription(e.target.value)} />
-        <input placeholder="format" onChange={(e) => setFormat(e.target.value)} />
-        <input placeholder="isbn" onChange={(e) => setIsbn(e.target.value)} />
-        <input placeholder="pages" onChange={(e) => setPages(Number(e.target.value))} />
-        <select onChange={(e) => setAuthorId(Number(e.target.value))}>
-            {
-                getAuthors.map((author, index) => {
-                    return <option value={author?.id}>{author?.first_name}</option>
-                })
-            }
-        </select>
-        <button onClick={handleSubmit}>Create Book</button>
+        <br />
+        <br />
+        <br />
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: "center" }}>
+            <Button variant="outlined" color="error" onClick={() => navigate("/authors")}>
+                Go Back
+            </Button>
+            <br />
+            <br />
+            <br />
+            <br />
+            <TextField
+                margin="normal"
+                required
+                label="Book Title"
+                name="title"
+                autoFocus
+            />
+            <br />
+            <TextField
+                margin="normal"
+                required
+                label="Book description"
+                name="description"
+                autoFocus
+            />
+            <br />
+            <TextField
+                margin="normal"
+                type="number"
+                required
+                label="Book pages"
+                name="pages"
+                autoFocus
+            />
+            <br />
+            <InputLabel id="demo-simple-select-label">Select an Author</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={getAuthorId}
+                label="Authors"
+                onChange={handleChange}
+            >
+                {
+                    getAuthors.map((author, index) => {
+                        return <MenuItem key={index} value={author?.id}>{`${author?.first_name} ${author?.last_name}`} </MenuItem>
+                    })
+                }
+            </Select>
+            <br />
+            <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Create Book
+            </Button>
+        </Box>
     </>
 
     async function fetchAuthors() {
@@ -54,19 +100,21 @@ export default function Book() {
         }
     }
 
-    async function handleSubmit() {
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+
         try {
             const response = await axios.post("http://127.0.0.1:8000/api/create/book", {
                 token: localStorage.getItem("token"),
-                title: getTitle,
+                title: data.get("title"),
                 date: new Date(),
-                description: getDescription,
-                isbn: getIsbn,
-                format: getFormat,
-                pages: getPages,
+                description: data.get("description"),
+                pages: Number(data.get("pages")),
                 author_id: getAuthorId
             });
             console.log("response", response);
+            if (response?.data?.success) return alert("Book Created Successfully");
         } catch (error) {
             console.log("ERROR", error);
         }

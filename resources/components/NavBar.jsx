@@ -10,9 +10,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { Avatar, Tooltip } from "@mui/material";
 
-const pages = [{ name: 'Create Book', url: "/createbook" }, { name: 'Create Author', url: "/createauthor" }];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [{ name: 'Create Book', url: "/createbook" }, { name: 'Create Author', url: "/createauthor" }, { name: 'Logout', url: "/" }];
 
 export default function NavBar() {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function NavBar() {
                     variant="h6"
                     noWrap
                     component="a"
-                    href="#app-bar-with-responsive-menu"
+                    onClick={() => navigate("/authors")}
                     sx={{
                         mr: 2,
                         display: { xs: 'none', md: 'flex' },
@@ -55,6 +55,7 @@ export default function NavBar() {
                         letterSpacing: '.3rem',
                         color: 'inherit',
                         textDecoration: 'none',
+                        cursor: "pointer"
                     }}
                 >
                     {`Logged In As: ${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`}
@@ -100,7 +101,12 @@ export default function NavBar() {
                     {pages.map((page, index) => (
                         <Button
                             key={index}
-                            onClick={(() => navigate(page.url))}
+                            onClick={(() => {
+                                if (page.name == "Logout") {
+                                    localStorage.clear();
+                                }
+                                navigate(page.url)
+                            })}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             {page.name}
@@ -108,13 +114,12 @@ export default function NavBar() {
                     ))}
                 </Box>
 
-                <Box sx={{ flexGrow: 0 }}>
-                    <Button>Logout</Button>
-                    {/* <Tooltip title="Open settings">
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                {/* <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title="Open settings">
+                        <IconButton onClick={"handleOpenUserMenu"} sx={{ p: 0 }}>
                             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                         </IconButton>
-                    </Tooltip> */}
+                    </Tooltip>
                     <Menu
                         sx={{ mt: '45px' }}
                         id="menu-appbar"
@@ -137,7 +142,7 @@ export default function NavBar() {
                             </MenuItem>
                         ))}
                     </Menu>
-                </Box>
+                </Box> */}
             </Toolbar>
         </Container>
     </AppBar>)

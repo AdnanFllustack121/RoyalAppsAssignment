@@ -66,7 +66,7 @@ Route::post("/get/authors", function (Request $request) {
     $client = new Client();
 
     try {
-        $response = $client->request('GET', 'https://candidate-testing.api.royal-apps.io/api/v2/authors', [
+        $response = $client->request('GET', 'https://candidate-testing.api.royal-apps.io/api/v2/authors?limit=99', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $body["token"]
@@ -112,9 +112,37 @@ Route::post("/create/book", function (Request $request) {
                 "title" => $body["title"],
                 "release_date" => $body["date"],
                 "description" => $body["description"],
-                "isbn" => $body["isbn"],
-                "format" => $body["format"],
+                "isbn" => "test isbn",
+                "format" => "test format",
                 "number_of_pages" => $body["pages"]
+            ],
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $body["token"]
+            ]
+        ]);
+
+        $data = json_decode($response->getBody());
+
+        return ["success" => true, "data" => $data];
+    } catch (\Throwable $e) {
+        throw $e;
+    }
+});
+
+Route::post("/create/author", function (Request $request) {
+    $body = $request->all();
+    $client = new Client();
+
+    try {
+        $response = $client->request('POST', 'https://candidate-testing.api.royal-apps.io/api/v2/authors', [
+            'json' => [
+                "first_name" => $body["first_name"],
+                "last_name" => $body["last_name"],
+                "birthday" => $body["birthday"],
+                "biography" => "biography",
+                "gender" => $body["gender"],
+                "place_of_birth" => $body["place"]
             ],
             'headers' => [
                 'Content-Type' => 'application/json',
