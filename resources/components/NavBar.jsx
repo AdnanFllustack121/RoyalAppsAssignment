@@ -17,6 +17,12 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export default function NavBar() {
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        if (!localStorage.getItem("token") || !localStorage.getItem("first_name") || !localStorage.getItem("last_name")) {
+            navigate("/");
+        }
+    }, []);
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -51,7 +57,7 @@ export default function NavBar() {
                         textDecoration: 'none',
                     }}
                 >
-                    {`${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`}
+                    {`Logged In As: ${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`}
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

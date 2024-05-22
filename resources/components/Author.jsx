@@ -5,7 +5,11 @@ import NavBar from "./NavBar";
 export default function Author() {
     const navigate = useNavigate();
     React.useEffect(() => {
-        getAuthorDetails();
+        if (!localStorage.getItem("token") || !localStorage.getItem("first_name") || !localStorage.getItem("last_name")) {
+            navigate("/");
+        } else {
+            getAuthorDetails();
+        }
     }, []);
 
     const [getAuthor, setAuthor] = React.useState(null);

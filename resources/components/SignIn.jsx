@@ -32,7 +32,13 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate();
-    
+
+    React.useEffect(() => {
+        if (localStorage.getItem("token") && localStorage.getItem("first_name") && localStorage.getItem("last_name")) {
+            navigate("/authors");
+        }
+    }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

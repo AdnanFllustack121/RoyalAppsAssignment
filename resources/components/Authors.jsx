@@ -27,7 +27,11 @@ const rows = [
 export default function Authors() {
     const navigate = useNavigate();
     React.useEffect(() => {
-        if (localStorage.getItem("token")) fetchAuthors();
+        if (!localStorage.getItem("token") || !localStorage.getItem("first_name") || !localStorage.getItem("last_name")) {
+            navigate("/");
+        } else {
+            fetchAuthors();
+        }
     }, []);
 
     const [getAuthors, setAuthors] = React.useState([]);

@@ -1,10 +1,15 @@
 import axios from "axios";
 import * as React from "react";
 import NavBar from "./NavBar";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateAuthor() {
+    const navigate = useNavigate();
+
     React.useEffect(() => {
-        // fetchAuthors();
+        if (!localStorage.getItem("token") || !localStorage.getItem("first_name") || !localStorage.getItem("last_name")) {
+            navigate("/");
+        }
     }, []);
 
     const [getFirstName, setFirstName] = React.useState("");
